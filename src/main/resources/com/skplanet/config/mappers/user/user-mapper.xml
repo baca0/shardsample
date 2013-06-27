@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skplanet.sqe.user.UserMapper">
+
+    <select id="selectUser" parameterType="com.skplanet.sqe.user.User" resultType="java.util.Map">
+      SELECT * FROM TESTUSER WHERE USER_ID = #{userId}
+    </select>
+
+    <insert id="insertUser" parameterType="com.skplanet.sqe.user.User" >
+        Insert into testuser (user_id, user_name)
+        values
+        (#{userId},#{userName})
+    </insert>
+
+    <update id="updateUser" parameterType="com.skplanet.sqe.user.User" >
+        update testuser
+          set user_name = ${user_name}
+        where user_id = #{user_id}
+    </update>
+
+    <delete id="deleteUser" parameterType="com.skplanet.sqe.user.User" >
+      delete from testuser where user_id = ${user_id}
+    </delete>
+
+</mapper>

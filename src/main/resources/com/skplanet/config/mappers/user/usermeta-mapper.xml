@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skplanet.sqe.user.UserMetaMapper">
+
+    <insert id="createUserSeq" keyColumn="id" keyProperty="id">
+        INSERT INTO user_sequence (info) VALUES ('0');
+    </insert>
+
+    <insert id="insertUserMeta" parameterType="com.skplanet.sqe.user.UserMeta" >
+        insert into testuser_meta (user_id,user_server_id) values (#{userId},#{userServerId})
+    </insert>
+
+    <select id="selectUserMeta" parameterType="com.skplanet.sqe.user.UserMeta" resultType="com.skplanet.sqe.user.UserMeta" >
+        select
+          user_id userId,
+          user_server_id userServerId
+        from testuser_meta
+        where user_id = #{userId}
+    </select>
+
+</mapper>
