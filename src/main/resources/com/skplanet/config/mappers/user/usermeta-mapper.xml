@@ -8,6 +8,10 @@
         INSERT INTO user_sequence (info) VALUES ('0');
     </insert>
 
+    <select id="createUserSeqResult" resultType="java.lang.Integer">
+      select last_insert_id()
+    </select>
+
     <insert id="insertUserMeta" parameterType="com.skplanet.sqe.user.UserMeta" >
         insert into testuser_meta (user_id,user_server_id) values (#{userId},#{userServerId})
     </insert>
