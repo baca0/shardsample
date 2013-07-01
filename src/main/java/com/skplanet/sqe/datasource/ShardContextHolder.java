@@ -10,6 +10,8 @@ public class ShardContextHolder {
 
     public static final ThreadLocal<ShardDbType> contextHolder = new ThreadLocal<>();
 
+    public static final ThreadLocal<String> userIdContextHolder = new ThreadLocal<>();
+
     public static  void setShardDbType(ShardDbType shardDbType) {
         contextHolder.set(shardDbType);
     }
@@ -21,5 +23,20 @@ public class ShardContextHolder {
     public static void clearShardDbType() {
         contextHolder.remove();
     }
+
+
+    public static  void setUserId(String userId) {
+        userIdContextHolder.set(userId);
+    }
+
+    public static String getUserId() {
+        return (String) userIdContextHolder.get();
+    }
+
+    public static void clearUserId() {
+        userIdContextHolder.remove();
+    }
+
+
 
 }
