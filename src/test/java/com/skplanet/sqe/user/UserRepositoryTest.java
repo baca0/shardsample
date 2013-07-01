@@ -1,6 +1,7 @@
 package com.skplanet.sqe.user;
 
 import com.skplanet.sqe.config.*;
+import com.skplanet.sqe.datasource.ShardContextHolder;
 import com.skplanet.sqe.datasource.ShardKey;
 import kr.pe.kwonnam.reflectioninjector.ReflectionInjectorUtils;
 import org.junit.Before;
@@ -32,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(defaultRollback = true)
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebMvcConfig.class,RootConfig.class,PropertiesConfig.class, AopConfig.class,PersistenceIbatisConfig.class})
+@ContextConfiguration(classes = {PersistenceIbatisConfig.class,WebMvcConfig.class,RootConfig.class,PropertiesConfig.class,AopConfig.class} )
 public class UserRepositoryTest {
 
     @Autowired
@@ -65,12 +66,14 @@ public class UserRepositoryTest {
         return users;
     }
 
+
     @Test
     public void testCreateUser() throws Exception {
 
         List<User> users = makeUser();
 
         for (User user : users) {
+            ShardContextHolder.setUserId(user.getUserId());
             //when
             userRepository.createUser(user);
 
