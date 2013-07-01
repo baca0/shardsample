@@ -6,13 +6,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created with IntelliJ IDEA.
- * User: skplanet
- * Date: 13. 6. 28.
- * Time: 오전 10:08
+ *  Sharding된 mysql에 user meta 정보와 추가적인 정보를 읽고, 저장할 경우에 메소드위에 선언을 한다.
+ *
+ *  <code>
+ *       @Select
+        public User selectUser(User user) {
+            userMapper.selectUser(user);
+            return user;
+        }
+  *  </code>
+  *
+  *  선언시 transaction는 TransactionDefinition.PROPAGATION_REQUIRES_NEW로 선언되고 개별적인 transaction으로 묶인다.
+  *  user_id 정보를 기반으로 해서 저장한 디비를 선정해서 하도록 해준다.
+  *
+  *  자세한 사항은
+  *  @see com.skplanet.sqe.datasource.ShardAop 참조
+ *
  */
-
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface Select {
