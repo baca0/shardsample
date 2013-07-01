@@ -5,11 +5,12 @@ package com.skplanet.sqe.user;
  * User: skplanet
  * Date: 13. 6. 26.
  * Time: 오전 11:27
- * To change this template use File | Settings | File Templates.
  */
 public interface UserMetaMapper {
 
     public int createUserSeq();
+
+    public int createUserSeqResult();
 
     public void insertUserMeta(UserMeta user);
 

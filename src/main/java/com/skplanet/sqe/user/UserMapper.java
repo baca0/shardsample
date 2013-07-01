@@ -1,7 +1,5 @@
 package com.skplanet.sqe.user;
 
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.Map;
 
@@ -10,7 +8,6 @@ import java.util.Map;
  * User: skplanet
  * Date: 13. 6. 25.
  * Time: 오후 5:17
- * To change this template use File | Settings | File Templates.
  */
 public interface UserMapper {
 
