@@ -1,6 +1,8 @@
 package com.skplanet.sqe.datasource;
 
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ShardKey {
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     private static final int DEFAULT_DIVIDER = ShardDbType.values().length;
 
@@ -27,6 +31,10 @@ public class ShardKey {
     }
 
     public int getShardKey(int key) {
+        if(log.isDebugEnabled()) {
+            log.debug("key = " + key);
+        }
+
         return key % getDivider() + 1  ;
     }
 }
