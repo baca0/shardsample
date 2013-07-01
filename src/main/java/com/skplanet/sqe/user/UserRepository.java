@@ -4,10 +4,12 @@ import com.skplanet.sqe.datasource.ShardContextHolder;
 import com.skplanet.sqe.datasource.ShardDbType;
 import com.skplanet.sqe.datasource.ShardKey;
 import com.skplanet.sqe.datasource.annotation.Insert;
+import com.skplanet.sqe.datasource.annotation.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -18,7 +20,6 @@ import javax.inject.Inject;
  * User: skplanet
  * Date: 13. 6. 27.
  * Time: 오전 11:17
- * To change this template use File | Settings | File Templates.
  */
 @Repository
 public class UserRepository {
@@ -34,34 +35,31 @@ public class UserRepository {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Insert
-    public User createUser(User user) {
-        ShardContextHolder.setShardDbType(ShardDbType.MASTER);
+
+    public UserMeta createUserMeta() {
         UserMeta userMeta= new UserMeta();
-        userMeta.setUserId(user.getUserId());
-        userMeta.setUserServerId(shardKey.getShardKey(userMetaMapper.createUserSeq()));
+        userMeta.setUserId(ShardContextHolder.getUserId());
+        userMetaMapper.createUserSeq();
+        userMeta.setUserServerId(shardKey.getShardKey(userMetaMapper.createUserSeqResult()));
         userMetaMapper.insertUserMeta(userMeta);
+        return userMeta;
+    }
 
-        if(logger.isDebugEnabled()) {
-            logger.debug(userMeta.toString());
-        }
-        ShardContextHolder.setShardDbType(ShardDbType.SLAVE2);
+    public UserMeta selectUserMeta() {
+        return userMetaMapper.selectUserMeta(ShardContextHolder.getUserId());
+    }
 
-        if(logger.isDebugEnabled()) {
-            logger.debug(ShardContextHolder.getShardDbType().toString());
-        }
-
+    @Insert
+    @Transactional
+    public User createUser(User user) {
         userMapper.insertUser(user);
         return user;
     }
 
+
+    @Select
     public User selectUser(User user) {
-        ShardContextHolder.setShardDbType(ShardDbType.MASTER);
-        UserMeta userMeta = userMetaMapper.selectUserMeta(user.getUserId());
-        if(userMeta != null ) {
-            ShardContextHolder.setShardDbType(ShardDbType.values()[userMeta.getUserServerId()]);
-            userMapper.selectUser(user);
-        }
+        userMapper.selectUser(user);
         return user;
     }
 }
